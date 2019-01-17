@@ -26,6 +26,9 @@ class.
 \item{second_mention}{Logical value, passed to \code{\link{print_name}}.}
 \item{...}{Further arguments passed among methods.}
 }
+\details{
+This is still under construction.
+}
 \value{
 An object of class \code{'phylo'} or \code{'multiPhylo'}.
 }
