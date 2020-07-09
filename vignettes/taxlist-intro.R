@@ -20,11 +20,11 @@ load(url("https://github.com/kamapu/thisdataismine/raw/master/data/Cross.rda"))
 
 
 ## ----head_example-------------------------------------------------------------
-head(Cross[,1:8])
+head(Cross[ ,1:8])
 
 
 ## ----character2taxlist--------------------------------------------------------
-Splist <- Cross[,"TaxonName"]
+Splist <- Cross[ ,"TaxonName"]
 Splist <- df2taxlist(Splist)
 summary(Splist)
 
@@ -35,7 +35,7 @@ summary(Splist, "Erigeron floribundus")
 
 ## ----load_easplist------------------------------------------------------------
 data(Easplist)
-summary(Easplist)
+Easplist
 
 
 ## ----summary_life_forms-------------------------------------------------------
@@ -43,23 +43,23 @@ summary(as.factor(Easplist$lf_behn_2018))
 
 
 ## ----papyrus_otp1, results="hide"---------------------------------------------
-Papyrus <- subset(Easplist, grepl("papyrus", TaxonName), slot="names")
+Papyrus <- subset(x=Easplist, subset=grepl("papyrus", TaxonName), slot="names")
 summary(Papyrus, "all")
 
 
 ## ----papyrus_opt2, results="hide"---------------------------------------------
-Papyrus <- subset(Easplist, TaxonConceptID == 206, slot="relations")
+Papyrus <- subset(x=Easplist, subset=TaxonConceptID == 206, slot="relations")
 summary(Papyrus, "all")
 
 
 ## ----phragmites, results="hide"-----------------------------------------------
-Phraaus <- subset(Easplist, charmatch("Phragmites australis", TaxonName),
-	slot="names")
+Phraaus <- subset(x=Easplist,
+		subset=charmatch("Phragmites australis", TaxonName), slot="names")
 summary(Phraaus, "all")
 
 
 ## ----summary_again------------------------------------------------------------
-summary(Easplist)
+Easplist
 
 
 ## ----recover_parents----------------------------------------------------------
@@ -84,23 +84,23 @@ taxon_views(Syntax) <- data.frame(ViewID=1, Secundum="Alvarez (2017)",
         Title="Classification of aquatic and semi-aquatic vegetation in East Africa",
         stringsAsFactors=FALSE)
 
-Syntax <- with(Concepts, add_concept(Syntax, TaxonName=TaxonName,
-                AuthorName=AuthorName, Parent=Parent, Level=Level,
-                ViewID=rep(1, nrow(Concepts))))
+Syntax <- add_concept(Syntax, TaxonName=Concepts$TaxonName,
+		AuthorName=Concepts$AuthorName, Parent=Concepts$Parent,
+		Level=Concepts$Level, ViewID=rep(1, nrow(Concepts)))
 
-summary(Syntax)
+Syntax
 
 
 ## ----adding_synonyms----------------------------------------------------------
 head(Synonyms)
-Syntax <- with(Synonyms, add_synonym(Syntax, ConceptID=TaxonConceptID,
-                TaxonName=TaxonName, AuthorName=AuthorName))
+Syntax <- add_synonym(Syntax, ConceptID=Synonyms$TaxonConceptID,
+		TaxonName=Synonyms$TaxonName, AuthorName=Synonyms$AuthorName)
 
 
 ## ----adding_traits------------------------------------------------------------
 head(Codes)
 taxon_traits(Syntax) <- Codes
-summary(Syntax)
+Syntax
 
 
 ## ----get_nymplot--------------------------------------------------------------
